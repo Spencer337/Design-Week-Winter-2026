@@ -124,8 +124,9 @@ GameObject:
   - component: {fileID: 6952095247215437492}
   - component: {fileID: 1064480017309229733}
   - component: {fileID: 2311878491325997837}
+  - component: {fileID: 8160856288078052472}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Obj_Digsite_Greybox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -228,6 +229,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 3.9986715, z: 1}
   m_Center: {x: 0, y: 1.4993362, z: 0}
+--- !u!65 &8160856288078052472
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674125204296814286}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.7, y: 2, z: 1.7}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!1 &1146173506046914345
 GameObject:
   m_ObjectHideFlags: 0

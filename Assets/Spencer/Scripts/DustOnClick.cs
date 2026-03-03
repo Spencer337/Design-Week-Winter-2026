@@ -5,6 +5,7 @@ public class DustOnClick : MonoBehaviour
 {
     public Vector3 positionOnFossil;
     public LayerMask sandLayerMask;
+    public Texture2D fossilTexture;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,5 +31,11 @@ public class DustOnClick : MonoBehaviour
             }
         }
 
+    }
+
+    public void paintPixel()
+    {
+        //fossilTexture.GetPixel(positionOnFossil);
+        //fossilTexture.GetPixels
     }
 }

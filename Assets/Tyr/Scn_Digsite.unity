@@ -364,7 +364,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -95.71146, y: 0, z: -134.2074, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1217,6 +1217,7 @@ MonoBehaviour:
   trigger: {fileID: 2014735674}
   player: {fileID: 490347417}
   playerInTrigger: 0
+  digsitePopUp: {fileID: 343601835}
 --- !u!65 &2014735674 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 8160856288078052472, guid: b7f3e04cc94708e43aca0e2576f07bc0, type: 3}

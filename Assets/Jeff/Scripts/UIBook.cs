@@ -10,6 +10,7 @@ public class UIBook : MonoBehaviour
     public GameObject BookPage2;
 
     public GameObject BookPage3;
+    private bool bookOpen = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,6 +27,15 @@ public class UIBook : MonoBehaviour
         if (BookPage3 != null)
             BookPage3.SetActive(false);
     }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            bookOpen = !bookOpen;
+            BookMenu.SetActive(bookOpen);
+        }
+    }
+
 
     public void PressedToShowBook()
     {

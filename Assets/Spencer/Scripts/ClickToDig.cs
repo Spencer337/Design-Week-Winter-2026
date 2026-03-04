@@ -8,17 +8,11 @@ public class ClickToDig : MonoBehaviour
     public Vector3 positionOnFossil;
     public LayerMask sandLayerMask;
     //public Texture2D fossilTexture;
-    public Material topLayer, middleLayer, bottomLayer;
-    public float opacity, currentlayer;
     public GameObject target;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        currentlayer = 0;
-        opacity = 1;
-        topLayer.color = new Color(1f, 1f, 1f, 1f);
-        middleLayer.color = new Color(1f, 1f, 1f, 1f);
     }
 
     // Update is called once per frame

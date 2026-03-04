@@ -2,20 +2,18 @@ using UnityEngine;
 
 public class CamMove : MonoBehaviour
 {
-    float speed =5;
+    public float PCRotatSpeed = 10f;
+    
+    public Camera Camera;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void OnMouseDrag()
     {
-        
+        float rotatX = Input.GetAxis("Mouse X") * PCRotatSpeed;
+        float rotatY = Input.GetAxis("Mouse Y") * PCRotatSpeed;
+
+        transform.Rotate(Vector3.down, rotatX);
+        transform.Rotate(Vector3.right, rotatY);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.W))
-        {
-            transform.position = transform.position + new Vector3(transform.position.y * speed, transform.position.x * speed, transform.position.z * speed);
-        }
-            
-    }
+
 }

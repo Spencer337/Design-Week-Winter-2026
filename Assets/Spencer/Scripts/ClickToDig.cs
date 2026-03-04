@@ -29,7 +29,7 @@ public class ClickToDig : MonoBehaviour
 
             if (Physics.Raycast(mouseClickRay, out mouseClickHit, 25f, sandLayerMask))
             {
-                Debug.Log("Digging");
+                //Debug.Log("Digging");
                 target = mouseClickHit.transform.gameObject;
                 Destroy(target);
                 target = null;

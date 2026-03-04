@@ -6,208 +6,83 @@ using UnityEngine.UI;
 
 public class Eraser : MonoBehaviour
 {
-    //是否擦除了
-    public bool isStartEraser;
-
-    //是否擦除结束了
-    public bool isEndEraser;
-
-    //开始事件
-    public Action eraserStartEvent;
-
-    //结束事件
-    public Action eraserEndEvent;
-
-    public RawImage uiTex;
-    Texture2D tex;
-    Texture2D MyTex;
-    int mWidth;
-    int mHeight;
-
-    [Header("Brush Size")]
-    public int brushSize = 50;
-
-    [Header("Rate")]
-    public int rate = 90;
-
-    float maxColorA;
-    float colorA;
-
-    void Awake()
+    private Texture2D m_Texture;
+    private Color[] m_Colors;
+    RaycastHit2D hit;
+    SpriteRenderer spriteRend;
+    Color zeroAlpha = Color.clear;
+    public int erSize;
+    public Vector2Int lastPos;
+    public bool Drawing = false; 
+    void Start()
     {
-        tex = (Texture2D)uiTex.mainTexture;
-        MyTex = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
-        mWidth = MyTex.width;
-        mHeight = MyTex.height;
-
-        MyTex.SetPixels(tex.GetPixels());
-        MyTex.Apply();
-        uiTex.texture = MyTex;
-        maxColorA = MyTex.GetPixels().Length;
-        colorA = 0;
-        isEndEraser = false;
-        isStartEraser = false;
-
+        spriteRend = gameObject.GetComponent<SpriteRenderer>();
+        var tex = spriteRend.sprite.texture;
+        m_Texture = new Texture2D(tex.width, tex.height, TextureFormat.ARGB32, false);
+        m_Texture.filterMode = FilterMode.Bilinear;
+        m_Texture.wrapMode = TextureWrapMode.Clamp;
+        m_Colors = tex.GetPixels();
+        m_Texture.SetPixels(m_Colors);
+        m_Texture.Apply();
+        spriteRend.sprite = Sprite.Create(m_Texture, spriteRend.sprite.rect, new Vector2(0.5f, 0.5f));
     }
 
-
-    /// <summary>
-    /// 贝塞尔平滑
-    /// </summary>
-    /// <param name="start">起点</param>
-    /// <param name="mid">中点</param>
-    /// <param name="end">终点</param>
-    /// <param name="segments">段数</param>
-    /// <returns></returns>
-    public Vector2[] Beizier(Vector2 start, Vector2 mid, Vector2 end, int segments)
+    void Update()
     {
-        float d = 1f / segments;
-        Vector2[] points = new Vector2[segments - 1];
-        for (int i = 0; i < points.Length; i++)
+        if (Input.GetMouseButtonDown(0))
         {
-            float t = d * (i + 1);
-            points[i] = (1 - t) * (1 - t) * mid + 2 * t * (1 - t) * start + t * t * end;
+            Drawing = false;   // 新的一笔
         }
-        List<Vector2> rps = new List<Vector2>();
-        rps.Add(mid);
-        rps.AddRange(points);
-        rps.Add(end);
-        return rps.ToArray();
-    }
 
-
-
-    bool startDraw = false;
-    bool twoPoints = false;
-    Vector2 lastPos;//最后一个点
-    Vector2 penultPos;//倒数第二个点
-    float radius = 12f;
-    float distance = 1f;
-
-
-
-    #region 事件
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        if (isEndEraser) { return; }
-        startDraw = true;
-        penultPos = eventData.position;
-        CheckPoint(penultPos);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (isEndEraser) { return; }
-        if (twoPoints && Vector2.Distance(eventData.position, lastPos) > distance)//如果两次记录的鼠标坐标距离大于一定的距离，开始记录鼠标的点
+        if (Input.GetMouseButton(0))
         {
-            Vector2 pos = eventData.position;
-            float dis = Vector2.Distance(lastPos, pos);
-
-            CheckPoint(eventData.position);
-            int segments = (int)(dis / radius);//计算出平滑的段数
-            segments = segments < 1 ? 1 : segments;
-            if (segments >= 10) { segments = 10; }
-            Vector2[] points = Beizier(penultPos, lastPos, pos, segments);//进行贝塞尔平滑
-            for (int i = 0; i < points.Length; i++)
+            hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+            if (hit.collider != null)
             {
-                CheckPoint(points[i]);
+                UpdateTexture();
+                Drawing = true;
             }
-            lastPos = pos;
-            if (points.Length > 2)
-                penultPos = points[points.Length - 2];
-        }
-        else
-        {
-            twoPoints = true;
-            lastPos = eventData.position;
         }
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void UpdateTexture()
     {
-        if (isEndEraser) { return; }
-        //CheckPoint(eventData.position);
-        startDraw = false;
-        twoPoints = false;
-    }
-
-
-    #endregion
-
-
-
-    void CheckPoint(Vector3 pScreenPos)
-    {
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(pScreenPos);
-        Vector3 localPos = uiTex.gameObject.transform.InverseTransformPoint(worldPos);
-
-        if (localPos.x > -mWidth / 2 && localPos.x < mWidth / 2 && localPos.y > -mHeight / 2 && localPos.y < mHeight / 2)
+        int w = m_Texture.width;
+        int h = m_Texture.height;
+        var mousePos = hit.point - (Vector2)hit.collider.bounds.min;
+        mousePos.x *= w / hit.collider.bounds.size.x;
+        mousePos.y *= h / hit.collider.bounds.size.y;
+        Vector2Int p = new Vector2Int((int)mousePos.x, (int)mousePos.y);
+        Vector2Int start = new Vector2Int();
+        Vector2Int end = new Vector2Int();
+        if (!Drawing)
+            lastPos = p;
+        start.x = Mathf.Clamp(Mathf.Min(p.x, lastPos.x) - erSize, 0, w);
+        start.y = Mathf.Clamp(Mathf.Min(p.y, lastPos.y) - erSize, 0, h);
+        end.x = Mathf.Clamp(Mathf.Max(p.x, lastPos.x) + erSize, 0, w);
+        end.y = Mathf.Clamp(Mathf.Max(p.y, lastPos.y) + erSize, 0, h);
+        Vector2 dir = p - lastPos;
+        for (int x = start.x; x < end.x; x++)
         {
-            for (int i = (int)localPos.x - brushSize; i < (int)localPos.x + brushSize; i++)
+            for (int y = start.y; y < end.y; y++)
             {
-                for (int j = (int)localPos.y - brushSize; j < (int)localPos.y + brushSize; j++)
+                Vector2 pixel = new Vector2(x, y);
+                Vector2 linePos = p;
+                if (Drawing)
                 {
-                    if (Mathf.Pow(i - localPos.x, 2) + Mathf.Pow(j - localPos.y, 2) > Mathf.Pow(brushSize, 2))
-                        continue;
-                    if (i < 0) { if (i < -mWidth / 2) { continue; } }
-                    if (i > 0) { if (i > mWidth / 2) { continue; } }
-                    if (j < 0) { if (j < -mHeight / 2) { continue; } }
-                    if (j > 0) { if (j > mHeight / 2) { continue; } }
-
-                    Color col = MyTex.GetPixel(i + (int)mWidth / 2, j + (int)mHeight / 2);
-                    if (col.a != 0f)
-                    {
-                        col.a = 0.0f;
-                        colorA++;
-                        MyTex.SetPixel(i + (int)mWidth / 2, j + (int)mHeight / 2, col);
-                    }
+                    float d = Vector2.Dot(pixel - lastPos, dir) / dir.sqrMagnitude;
+                    d = Mathf.Clamp01(d);
+                    linePos = Vector2.Lerp(lastPos, p, d);
+                }
+                if ((pixel - linePos).sqrMagnitude <= erSize * erSize)
+                {
+                    m_Colors[x + y * w] = zeroAlpha;
                 }
             }
-
-
-            //开始刮的时候 去判断进度
-            if (!isStartEraser)
-            {
-                isStartEraser = true;
-                InvokeRepeating("getTransparentPercent", 0f, 0.2f);
-                if (eraserStartEvent != null)
-                    eraserStartEvent.Invoke();
-            }
-
-            MyTex.Apply();
         }
-    }
-
-
-
-    double fate;
-
-
-    /// <summary>
-    /// 检测当前刮刮卡 进度
-    /// </summary>
-    /// <returns></returns>
-    public void getTransparentPercent()
-    {
-        if (isEndEraser) { return; }
-
-
-        fate = colorA / maxColorA * 100;
-
-        fate = (float)Math.Round(fate, 2);
-
-        // Debug.LogError("当前百分比: " + fate);
-
-        if (fate >= rate)
-        {
-            isEndEraser = true;
-            CancelInvoke("getTransparentPercent");
-            gameObject.SetActive(false);
-
-            //触发结束事件
-            if (eraserEndEvent != null)
-                eraserEndEvent.Invoke();
-
-        }
+        lastPos = p;
+        m_Texture.SetPixels(m_Colors);
+        m_Texture.Apply();
+        spriteRend.sprite = Sprite.Create(m_Texture, spriteRend.sprite.rect, new Vector2(0.5f, 0.5f));
     }
 }

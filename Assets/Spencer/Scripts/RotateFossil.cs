@@ -24,7 +24,11 @@ public class RotateFossil : MonoBehaviour
                 healthbar.gameObject.SetActive(true);
                 healthbar.value = health;
             }
-            Debug.Log("register fossil, display health bar");
+        }
+        if (health <= 0)
+        {
+            healthbar.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 
@@ -43,7 +47,7 @@ public class RotateFossil : MonoBehaviour
 
     public void crackFossil()
     {
-        health -= 5;
+        health -= 20;
         healthbar.value = health;
     }
 }

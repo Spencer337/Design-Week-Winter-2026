@@ -19,16 +19,22 @@ namespace StarterAssets
 		[Header("Mouse Cursor Settings")]
 		public bool cursorLocked = false;
 		public bool cursorInputForLook = true;
+		public DiggingAndDusting excavationScript;
 
 #if ENABLE_INPUT_SYSTEM
         public void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                cursorInputForLook = !cursorInputForLook;
+			if (excavationScript.isDigging == false)
+			{
+				cursorInputForLook = false;
+				SetCursorState(cursorInputForLook);
+			}
+			else
+			{
+                cursorInputForLook = true;
                 SetCursorState(cursorInputForLook);
             }
-        }
+		}
         public void OnMove(InputValue value)
 		{
 			MoveInput(value.Get<Vector2>());
@@ -83,6 +89,6 @@ namespace StarterAssets
 		{
 			Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
 		}
-	}
+    }
 	
 }

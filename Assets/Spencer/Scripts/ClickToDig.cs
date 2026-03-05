@@ -1,7 +1,5 @@
-using Unity.Multiplayer.PlayMode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEditor.Experimental.GraphView.Port;
 
 public class ClickToDig : MonoBehaviour
 {

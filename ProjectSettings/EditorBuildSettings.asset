@@ -5,12 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Tyr/Scn_Digsite.unity
     guid: cf75562b62c66a14fad24f65406ce38b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Spencer/Scenes/Dusting Test.unity
     guid: 4e269f7b1f6505f4ba9751b007da44d8
+  - enabled: 1
+    path: Assets/Spencer/Scenes/Digging Scene.unity
+    guid: 4775bd8d61834d64aa6e79982b991575
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

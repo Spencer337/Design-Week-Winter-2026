@@ -57,7 +57,7 @@ public class DiggingAndDusting : MonoBehaviour
 
             // Get the mouse raycast
             bool rightMouseClicked = Mouse.current.rightButton.wasPressedThisFrame;
-            bool leftMouseClicked = Mouse.current.rightButton.wasPressedThisFrame;
+            bool leftMouseClicked = Mouse.current.leftButton.wasPressedThisFrame;
 
             if (leftMouseClicked)
             {
@@ -68,6 +68,7 @@ public class DiggingAndDusting : MonoBehaviour
                 // If the ray hits a fossil, register it
                 if (Physics.Raycast(mouseClickRay, out mouseClickHit, 25f, fossilLayer))
                 {
+                    Debug.Log("fossilClicked");
                     currentFossil = mouseClickHit.transform.gameObject;
                 }
             }
@@ -91,6 +92,10 @@ public class DiggingAndDusting : MonoBehaviour
                     target = mouseClickHit.transform.gameObject;
                     Destroy(target);
                     Debug.Log("Fossil crack");
+                    if (currentFossil != null)
+                    {
+                        currentFossil.GetComponent<RotateFossil>().crackFossil();
+                    }
                 }
             }
 

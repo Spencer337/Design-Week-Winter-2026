@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RotateFossil : MonoBehaviour
 {
@@ -7,10 +8,24 @@ public class RotateFossil : MonoBehaviour
 
     public Camera Camera;
     public DiggingAndDusting excavationScript;
+    public Slider healthbar;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         
+    }
+
+    private void Update()
+    {
+        if (excavationScript.currentFossil == gameObject)
+        {
+            if (healthbar.IsActive() == false)
+            {
+                healthbar.gameObject.SetActive(true);
+                healthbar.value = health;
+            }
+            Debug.Log("register fossil, display health bar");
+        }
     }
 
     // Update is called once per frame
@@ -29,5 +44,6 @@ public class RotateFossil : MonoBehaviour
     public void crackFossil()
     {
         health -= 5;
+        healthbar.value = health;
     }
 }

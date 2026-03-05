@@ -4,12 +4,13 @@ using UnityEngine.InputSystem;
 
 public class DiggingAndDusting : MonoBehaviour
 {
-    public LayerMask sandLayer, dustLayer, dirtLayer;
+    public LayerMask sandLayer, dustLayer, dirtLayer, fossilLayer;
     public GameObject target;
     public StarterAssetsInputs playerInputs;
     public bool isDigging;
     private Ray mouseClickRay;
     private RaycastHit mouseClickHit;
+    public GameObject currentFossil = null;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -56,6 +57,21 @@ public class DiggingAndDusting : MonoBehaviour
 
             // Get the mouse raycast
             bool rightMouseClicked = Mouse.current.rightButton.wasPressedThisFrame;
+            bool leftMouseClicked = Mouse.current.rightButton.wasPressedThisFrame;
+
+            if (leftMouseClicked)
+            {
+                Vector3 mousePosition = Mouse.current.position.ReadValue();
+
+                mouseClickRay = Camera.main.ScreenPointToRay(mousePosition);
+
+                // If the ray hits a fossil, register it
+                if (Physics.Raycast(mouseClickRay, out mouseClickHit, 25f, fossilLayer))
+                {
+                    currentFossil = mouseClickHit.transform.gameObject;
+                }
+            }
+
             if (rightMouseClicked)
             {
                 Vector3 mousePosition = Mouse.current.position.ReadValue();

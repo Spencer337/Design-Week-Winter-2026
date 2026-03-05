@@ -3,6 +3,7 @@ using UnityEngine;
 public class RotateFossil : MonoBehaviour
 {
     public float rotateSpeed = 10f;
+    public float health = 100;
 
     public Camera Camera;
     public DiggingAndDusting excavationScript;
@@ -23,5 +24,10 @@ public class RotateFossil : MonoBehaviour
             transform.Rotate(Vector3.down, rotatX);
             transform.Rotate(Vector3.right, rotatY);
         }
+    }
+
+    public void crackFossil()
+    {
+        health -= 5;
     }
 }

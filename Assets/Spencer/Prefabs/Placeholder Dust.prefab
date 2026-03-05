@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8149948086161984247}
   - component: {fileID: 5906212120912499912}
   - component: {fileID: 708280719630367408}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Placeholder Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2499200160921830181}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -5495902117074765545, guid: 0f648760d45d74d4f82bf7e89492a779, type: 3}
 --- !u!23 &5906212120912499912
 MeshRenderer:
   m_ObjectHideFlags: 0

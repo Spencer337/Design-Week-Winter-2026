@@ -9,6 +9,8 @@ public class RotateFossil : MonoBehaviour
     public Camera Camera;
     public DiggingAndDusting excavationScript;
     public Slider healthbar;
+
+    public int fossilID;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

@@ -6,30 +6,25 @@ using UnityEngine.SceneManagement;
 public class UIBook : MonoBehaviour
 {
     public GameObject BookMenu;
-    public GameObject BookPage1;
-    public GameObject BookPage2;
-
-    public GameObject BookPage3;
     private bool bookOpen = false;
+
+    public Image[] ImageTab;
+    public GameObject[] GameObjectTabPage;
+
+    public GameObject[] FossilPageArry;
+    public GameObject[] ObjectPageArry;
+    
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (BookMenu != null)
-            BookMenu.SetActive(false);
-
-        if (BookPage1 != null)
-            BookPage1.SetActive(true);
-
-        if (BookPage2 != null)
-            BookPage2.SetActive(false);
-
-        if (BookPage3 != null)
-            BookPage3.SetActive(false);
+        TabPage(0);
+        FossilPagePlus(0);
+        ObjectPagePlus(0);
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             bookOpen = !bookOpen;
             BookMenu.SetActive(bookOpen);
@@ -37,34 +32,62 @@ public class UIBook : MonoBehaviour
     }
 
 
-    public void PressedToShowBook()
+    public void TabPage(int tabWhich)
     {
-        BookMenu.SetActive(true);
+        int count = Mathf.Min(GameObjectTabPage.Length, ImageTab.Length);
+
+        if (tabWhich < 0 || tabWhich >= count) return;
+        for (int i = 0; i < GameObjectTabPage.Length; i++)
+        {
+            GameObjectTabPage[i].SetActive(false);
+            ImageTab[i].color = Color.grey;
+        }
+        GameObjectTabPage[tabWhich].SetActive(true);
+        ImageTab[tabWhich].color = Color.white;
     }
-    public void PressedLToGoPageTwo()
+
+    public void FossilPagePlus(int FPageWhichRight)
     {
-        BookPage2.SetActive(true);
-        BookPage1.SetActive(false);
-    }
-    public void PressedRToGoPageOne()
-    {
-        BookPage1.SetActive(true);
-        BookPage2.SetActive(false);
-        
-    }
-    public void PressedRToGoPageThree()
-    {
-        BookPage3.SetActive(true);
-        BookPage2.SetActive(false);
-    }
-    public void PressedRToGoPagetwo()
-    {
-        BookPage2.SetActive(true);
-        BookPage3.SetActive(false);
+        if (FPageWhichRight < 0 || FPageWhichRight >= FossilPageArry.Length)
+            return;
+        for (int i = 0; i < FossilPageArry.Length; i++)
+        {
+            FossilPageArry[i].SetActive(false);
+        }
+        FossilPageArry[FPageWhichRight].SetActive(true);
 
     }
-    public void CloseBook()
+    public void FossilPageMinus(int FPageWhichLeft)
     {
-        BookMenu.SetActive(false);
+        if (FPageWhichLeft < 0 || FPageWhichLeft >= FossilPageArry.Length)
+            return;
+        for (int i = 0; i < FossilPageArry.Length; i++)
+        {
+            FossilPageArry[i].SetActive(false);
+        }
+        FossilPageArry[FPageWhichLeft].SetActive(true);
+
+    }
+    public void ObjectPagePlus(int OPageWhichRight)
+    {
+        if (OPageWhichRight < 0 || OPageWhichRight >= ObjectPageArry.Length)
+            return;
+        for (int i = 0; i < ObjectPageArry.Length; i++)
+        {
+            ObjectPageArry[i].SetActive(false);
+        }
+        ObjectPageArry[OPageWhichRight].SetActive(true);
+
+    }
+    public void ObjectPageMinus(int OPageWhichLeft)
+    {
+        if (OPageWhichLeft < 0 || OPageWhichLeft >= ObjectPageArry.Length)
+            return;
+        for (int i = 0; i < ObjectPageArry.Length; i++)
+        {
+            ObjectPageArry[i].SetActive(false);
+        }
+        ObjectPageArry[OPageWhichLeft].SetActive(true);
+
     }
 }

@@ -5,7 +5,7 @@ using static UnityEditor.Experimental.GraphView.Port;
 
 public class ClickToDig : MonoBehaviour
 {
-    public Vector3 positionOnFossil;
+    //public Vector3 positionOnFossil;
     public LayerMask sandLayerMask;
     //public Texture2D fossilTexture;
     public GameObject target;

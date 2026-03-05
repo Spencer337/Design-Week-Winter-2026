@@ -29,7 +29,7 @@ public class UIBook : MonoBehaviour
     }
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.E))
         {
             bookOpen = !bookOpen;
             BookMenu.SetActive(bookOpen);

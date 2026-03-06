@@ -1,6 +1,8 @@
 using StarterAssets;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class DiggingAndDusting : MonoBehaviour
 {
@@ -12,10 +14,11 @@ public class DiggingAndDusting : MonoBehaviour
     private RaycastHit mouseClickHit;
     public GameObject currentFossil = null;
     public GameObject notebookUI;
+    public float score;
+    public TMP_Text scoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -53,7 +56,6 @@ public class DiggingAndDusting : MonoBehaviour
         // If the player is in the dusting phase
         if (isDigging == false)
         {
-            
 
             // Display healthbar in UI
 
@@ -111,14 +113,29 @@ public class DiggingAndDusting : MonoBehaviour
         }
     }
 
-    //public void getRaycastHit()
-    //{
-    //    bool leftMouseClicked = Mouse.current.leftButton.wasPressedThisFrame;
-    //    if (leftMouseClicked)
-    //    {
-    //        Vector3 mousePosition = Mouse.current.position.ReadValue();
-
-    //        mouseClickRay = Camera.main.ScreenPointToRay(mousePosition);
-    //    }
-    //}
+    public void CheckFossil(int bookID)
+    {
+        if (currentFossil != null)
+        {
+            int fossilID = currentFossil.GetComponent<RotateFossil>().fossilID;
+            Debug.Log("Checking");
+            if (fossilID == bookID)
+            {
+                Debug.Log("Correct");
+                //Increase Score
+                score += currentFossil.GetComponent<RotateFossil>().health;
+                scoreText.text = score.ToString();
+                currentFossil.GetComponent<RotateFossil>().health = 0;
+            }
+            else
+            {
+                //Decrease score
+                Debug.Log("Incorrect");
+                score -= 50;
+                scoreText.text = score.ToString();
+                currentFossil.GetComponent<RotateFossil>().health = 0;
+            }
+        }
+        
+    }
 }
